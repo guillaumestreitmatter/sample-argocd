@@ -1,2 +1,3 @@
 # Local .op directories
 **/.op/*
+.DS_Store
