@@ -1,23 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: devops-paradox 
+  name: svcdocuments
   namespace: argocd
-  finalizer:
+  finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: svcdocuments
   source:
-    repoURL: https://github.com/vfarcic/devops-paradox.git
+    repoURL: https://github.com/skelloapp/svc-documents
     targetRevision: HEAD
-    path: helm
-    helm:
-      values: |
-        images:
-          tag: latest
-        ingress:
-          host: devops-paradox.$INGRESS_HOST.xip.io
-      version: v3
   destination:
     server: https://kubernetes.default.svc
     namespace: production

@@ -1,23 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: devops-toolkit 
+  name: svccommunications
   namespace: argocd
-  finalizer:
+  finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: svccommunications
   source:
-    repoURL: https://github.com/vfarcic/devops-toolkit.git
+    repoURL: https://github.com/skelloapp/svc-communications
     targetRevision: HEAD
-    path: helm
-    helm:
-      values: |
-        images:
-          tag: latest
-        ingress:
-          host: devops-toolkit.$INGRESS_HOST.xip.io
-      version: v3
   destination:
     server: https://kubernetes.default.svc
     namespace: production

@@ -1,18 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: devops-toolkit
+  name: skelloapp
   namespace: argocd
-  finalizer:
+  finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: skelloapp
   source:
-    repoURL: https://github.com/vfarcic/argocd-15-min.git
+    # repoURL: https://github.com/skelloapp/skello-app
+    repoURL: https://github.com/argoproj/argocd-example-apps
     targetRevision: HEAD
+    path: guestbook
   destination:
     server: https://kubernetes.default.svc
-    namespace: production
+    namespace: default
   syncPolicy:
     automated:
       selfHeal: true

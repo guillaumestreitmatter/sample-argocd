@@ -1,4 +1,0 @@
-apiVersion: v1
-description: Production Environment
-name: production
-version: "1.0.0"
