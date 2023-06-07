@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: app-2
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Project description
+  description: Example of Argo CD project.
+
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+    - 'https://github.com/guillaumestreitmatter/sample-argocd.git'
+
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  # Destination clusters can be identified by 'server', 'name', or both.
+  destinations:
+    - namespace: app-2
+      server: https://kubernetes.default.svc
+      name: in-cluster
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+      name: in-cluster
+
+  # Deny all cluster-scoped resources from being created, except for Namespace
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+
+  # Deny all namespaced-scoped resources from being created, except for Deployment and StatefulSet
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+
+  # Enables namespace orphaned resource monitoring.
+  orphanedResources:
+    warn: false
+
+  roles:
+    # A role which provides sync privileges to only the app-2 application, e.g. to provide
+    # sync privileges to a CI system
+    # Applications, applicationsets, logs, and exec (which belong to an AppProject):
+    # - p, <role/user/group>, <resource>, <action>, <appproject>/<object>
+    # For all resources except application-specific permissions:
+    # - p, <role/user/group>, <resource>, <action>, <object>
+    - name: ci-role
+      description: Sync privileges for app-2
+      policies:
+        - p, proj:app-2:ci-role, applications, sync, app-2/*, allow
+        
