@@ -6,7 +6,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: app-2
+  project: app-1
   source:
     repoURL: https://github.com/guillaumestreitmatter/sample-argocd.git
     targetRevision: HEAD
@@ -14,9 +14,9 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: app-2
-  syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true
-    syncOptions:
-    - CreateNamespace=true
+  # syncPolicy:
+  #   automated:
+  #     selfHeal: true
+  #     prune: true
+    # syncOptions:
+    # - CreateNamespace=true

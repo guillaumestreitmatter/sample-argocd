@@ -19,10 +19,7 @@ spec:
   destinations:
     - namespace: app-2
       server: https://kubernetes.default.svc
-      name: in-cluster
-    - namespace: argocd
-      server: https://kubernetes.default.svc
-      name: in-cluster
+      name: in-cluster-app-2
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
@@ -49,4 +46,3 @@ spec:
       description: Sync privileges for app-2
       policies:
         - p, proj:app-2:ci-role, applications, sync, app-2/*, allow
-        

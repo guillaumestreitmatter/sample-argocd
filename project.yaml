@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: app-1
+  name: apps
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
@@ -20,6 +20,9 @@ spec:
     - namespace: app-1
       server: https://kubernetes.default.svc
       name: in-cluster-app-1
+    - namespace: app-2
+      server: https://kubernetes.default.svc
+      name: in-cluster-app-2
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
@@ -42,7 +45,11 @@ spec:
     # - p, <role/user/group>, <resource>, <action>, <appproject>/<object>
     # For all resources except application-specific permissions:
     # - p, <role/user/group>, <resource>, <action>, <object>
-    - name: ci-role
+    - name: ci-role-app1
       description: Sync privileges for app-1
       policies:
         - p, proj:app-1:ci-role, applications, sync, app-1/*, allow
+    - name: ci-role-app2
+      description: Sync privileges for app-2
+      policies:
+        - p, proj:app-2:ci-role, applications, sync, app-2/*, allow
